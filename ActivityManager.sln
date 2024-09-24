@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivityManager", "ActivityManager\ActivityManager.csproj", "{7038E7E0-5E07-4AB6-92ED-01FB357D4BDE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{810766CD-FD53-4D98-A29E-F0D072A0CA73} = {810766CD-FD53-4D98-A29E-F0D072A0CA73}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActivityManager.DAL", "ActivityManager.DAL\ActivityManager.DAL.csproj", "{810766CD-FD53-4D98-A29E-F0D072A0CA73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{7038E7E0-5E07-4AB6-92ED-01FB357D4BDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7038E7E0-5E07-4AB6-92ED-01FB357D4BDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7038E7E0-5E07-4AB6-92ED-01FB357D4BDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{810766CD-FD53-4D98-A29E-F0D072A0CA73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{810766CD-FD53-4D98-A29E-F0D072A0CA73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{810766CD-FD53-4D98-A29E-F0D072A0CA73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{810766CD-FD53-4D98-A29E-F0D072A0CA73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
