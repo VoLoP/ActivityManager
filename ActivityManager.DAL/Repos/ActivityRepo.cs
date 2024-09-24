@@ -1,7 +1,9 @@
 ﻿using ActivityManager.DAL.Data;
 using ActivityManager.DAL.Repos.IRepos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,40 +12,42 @@ namespace ActivityManager.DAL.Repos
 {
     public class ActivityRepo : IActivityRepo
     {
-        private readonly List<Activity> _activities = new List<Activity>();
+        private readonly ActivityContext _context;
+
+        public ActivityRepo(ActivityContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<Activity> GetAll()
         {
-            return _activities;
+            return _context.Activities.ToList();
         }
 
         public Activity GetById(int id)
         {
-            return _activities.SingleOrDefault(a => a.Id == id);
+            return _context.Activities.Find(id);
         }
 
         public void Add(Activity activity)
         {
-            _activities.Add(activity);
+            _context.Activities.Add(activity);
+            _context.SaveChanges();
         }
 
         public void Update(Activity activity)
         {
-            var existingActivity = GetById(activity.Id);
-            if (existingActivity != null)
-            {
-                existingActivity.Name = activity.Name;
-                existingActivity.Date = activity.Date;
-                existingActivity.Description = activity.Description;
-            }
+            _context.Entry(activity).State = EntityState.Modified;
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
-            var activity = GetById(id);
+            var activity = _context.Activities.Find(id);
             if (activity != null)
             {
-                _activities.Remove(activity);
+                _context.Activities.Remove(activity);
+                _context.SaveChanges();
             }
         }
     }
