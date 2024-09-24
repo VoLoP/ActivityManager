@@ -1,4 +1,5 @@
 ﻿using ActivityManager.DAL.Data;
+using ActivityManager.DAL.Repos.IRepos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ActivityManager.DAL.Repos
 {
-    public class ActivityRepo
+    public class ActivityRepo : IActivityRepo
     {
         private readonly List<Activity> _activities = new List<Activity>();
 
