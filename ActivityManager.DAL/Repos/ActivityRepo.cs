@@ -12,30 +12,30 @@ namespace ActivityManager.DAL.Repos
 {
     public class ActivityRepo : IActivityRepo
     {
-        private readonly ActivityContext _context;
+        private readonly ActivityDb _context;
 
-        public ActivityRepo(ActivityContext context)
+        public ActivityRepo(ActivityDb context)
         {
             _context = context;
         }
 
-        public IEnumerable<Activity> GetAll()
+        public IEnumerable<Data.Activity> GetAll()
         {
             return _context.Activities.ToList();
         }
 
-        public Activity GetById(int id)
+        public Data.Activity GetById(int id)
         {
             return _context.Activities.Find(id);
         }
 
-        public void Add(Activity activity)
+        public void Add(Data.Activity activity)
         {
             _context.Activities.Add(activity);
             _context.SaveChanges();
         }
 
-        public void Update(Activity activity)
+        public void Update(Data.Activity activity)
         {
             _context.Entry(activity).State = EntityState.Modified;
             _context.SaveChanges();
