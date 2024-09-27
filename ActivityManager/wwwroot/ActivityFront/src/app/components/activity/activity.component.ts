@@ -6,11 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from '../app/app.component';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-activity',
   standalone: true,
-  imports: [BrowserModule, HttpClientModule, AppComponent, FormsModule],
+  imports: [CommonModule, HttpClientModule, AppComponent, FormsModule],
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.scss'
 })
