@@ -43,13 +43,9 @@ namespace ActivityManager.Controllers
             return CreatedAtAction(nameof(GetById), new { id = activity.Id }, activity);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] DAL.Data.Activity activity)
+        [HttpPut]
+        public IActionResult Update([FromBody] DAL.Data.Activity activity)
         {
-            if (id != activity.Id)
-            {
-                return BadRequest();
-            }
             _activityRepository.Update(activity);
             return NoContent();
         }
