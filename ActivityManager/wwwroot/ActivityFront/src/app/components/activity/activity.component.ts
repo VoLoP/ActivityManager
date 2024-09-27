@@ -19,6 +19,7 @@ export class ActivityComponent implements OnInit {
 
   activities: Activity[] = [];
   newActivity: Activity = { id: 0, name: '', date: new Date(), description: '' };
+  selectedActivity: Activity | null = null;
 
   constructor(private activityService: ActivityService) {}
 
@@ -43,5 +44,18 @@ export class ActivityComponent implements OnInit {
     this.activityService.delete(id).subscribe(() => {
       this.loadActivities();
     });
+  }
+
+  editActivity(activity: Activity): void {
+    this.selectedActivity = { ...activity };
+  }
+
+  updateActivity(): void {
+    if (this.selectedActivity) {
+      this.activityService.update(this.selectedActivity).subscribe(() => {
+        this.loadActivities();
+        this.selectedActivity = null;
+      });
+    }
   }
 }
