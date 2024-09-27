@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivityService } from '../../services/activity.service';
 import { Activity } from '../../models/activity.model';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from '../app/app.component';
 import { NgModule } from '@angular/core';
@@ -24,26 +23,20 @@ export class ActivityComponent implements OnInit {
   constructor(private activityService: ActivityService) {}
 
   ngOnInit(): void {
-    this.loadActivities();
-  }
-
-  loadActivities(): void {
-    this.activityService.getAll().subscribe(data => {
+    this.activityService.activities$.subscribe(data => {
       this.activities = data;
     });
+    this.activityService.loadActivities();
   }
 
   addActivity(): void {
     this.activityService.create(this.newActivity).subscribe(() => {
-      this.loadActivities();
       this.newActivity = { id: 0, name: '', date: new Date(), description: '' };
     });
   }
 
   deleteActivity(id: number): void {
-    this.activityService.delete(id).subscribe(() => {
-      this.loadActivities();
-    });
+    this.activityService.delete(id).subscribe();
   }
 
   editActivity(activity: Activity): void {
@@ -53,7 +46,6 @@ export class ActivityComponent implements OnInit {
   updateActivity(): void {
     if (this.selectedActivity) {
       this.activityService.update(this.selectedActivity).subscribe(() => {
-        this.loadActivities();
         this.selectedActivity = null;
       });
     }

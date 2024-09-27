@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Activity } from '../models/activity.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'any'
@@ -9,11 +10,15 @@ import { Activity } from '../models/activity.model';
 export class ActivityService {
 
   private apiUrl = 'https://localhost:7207/api/Activity';
+  private activitiesSubject = new BehaviorSubject<Activity[]>([]);
+  public activities$ = this.activitiesSubject.asObservable();
 
   constructor(private http: HttpClient) { }
 
-getAll(): Observable<Activity[]> {
-    return this.http.get<Activity[]>(this.apiUrl);
+  loadActivities(): void {
+    this.http.get<Activity[]>(this.apiUrl).subscribe(data => {
+      this.activitiesSubject.next(data);
+    });
   }
 
   getById(id: number): Observable<Activity> {
@@ -21,14 +26,20 @@ getAll(): Observable<Activity[]> {
   }
 
   create(activity: Activity): Observable<Activity> {
-    return this.http.post<Activity>(this.apiUrl, activity);
+    return this.http.post<Activity>(this.apiUrl, activity).pipe(
+      tap(() => this.loadActivities())
+    );
   }
 
   update(activity: Activity): Observable<void> {
-    return this.http.put<void>(this.apiUrl, activity);
+    return this.http.put<void>(this.apiUrl, activity).pipe(
+      tap(() => this.loadActivities())
+    );
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      tap(() => this.loadActivities())
+    );
   }
 }
