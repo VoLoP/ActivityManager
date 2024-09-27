@@ -8,7 +8,7 @@ import { Activity } from '../models/activity.model';
 })
 export class ActivityService {
 
-  private apiUrl = 'https://localhost:5001/api/activity';
+  private apiUrl = 'https://localhost:7207/api/Activity';
 
   constructor(private http: HttpClient) { }
 
