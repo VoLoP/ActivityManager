@@ -1,1 +1,26 @@
-<p>activity works!wow</p>
+<div>
+    <h2>Activities</h2>
+    <ul>
+      <li *ngFor="let activity of activities">
+        {{ activity.name }} - {{ activity.date | date }} - {{ activity.description }}
+        <button (click)="deleteActivity(activity.id)">Delete</button>
+      </li>
+    </ul>
+  
+    <h3>Add New Activity</h3>
+    <form (ngSubmit)="addActivity()">
+      <label>
+        Name:
+        <input [(ngModel)]="newActivity.name" name="name" required />
+      </label>
+      <label>
+        Date:
+        <input [(ngModel)]="newActivity.date" name="date" type="date" required />
+      </label>
+      <label>
+        Description:
+        <input [(ngModel)]="newActivity.description" name="description" required />
+      </label>
+      <button type="submit">Add</button>
+    </form>
+  </div>
