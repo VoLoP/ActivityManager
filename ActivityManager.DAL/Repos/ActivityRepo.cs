@@ -1,11 +1,8 @@
 ﻿using ActivityManager.DAL.Data;
 using ActivityManager.DAL.Repos.IRepos;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ActivityManager.DAL.Repos
@@ -19,35 +16,35 @@ namespace ActivityManager.DAL.Repos
             _context = context;
         }
 
-        public IEnumerable<Data.Activity> GetAll()
+        public async Task<IEnumerable<Data.Activity>> GetAllAsync()
         {
-            return _context.Activities.ToList();
+            return await _context.Activities.ToListAsync();
         }
 
-        public Data.Activity GetById(int id)
+        public async Task<Data.Activity> GetByIdAsync(int id)
         {
-            return _context.Activities.Find(id);
+            return await _context.Activities.FindAsync(id);
         }
 
-        public void Add(Data.Activity activity)
+        public async Task AddAsync(Data.Activity activity)
         {
-            _context.Activities.Add(activity);
-            _context.SaveChanges();
+            await _context.Activities.AddAsync(activity);
+            await _context.SaveChangesAsync();
         }
 
-        public void Update(Data.Activity activity)
+        public async Task UpdateAsync(Data.Activity activity)
         {
             _context.Entry(activity).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var activity = _context.Activities.Find(id);
+            var activity = await _context.Activities.FindAsync(id);
             if (activity != null)
             {
                 _context.Activities.Remove(activity);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
         }
     }

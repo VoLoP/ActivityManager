@@ -1,9 +1,8 @@
 ﻿using ActivityManager.DAL.Repos.IRepos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 using ActivityManager.DAL.Data;
-
 
 namespace ActivityManager.Controllers
 {
@@ -11,24 +10,26 @@ namespace ActivityManager.Controllers
     [ApiController]
     public class ActivityController : ControllerBase
     {
-       private readonly IActivityRepo _activityRepository;
+        private readonly IActivityRepo _activityRepository;
+        private readonly ILogger<ActivityController> _logger;
 
-        public ActivityController(IActivityRepo activityRepository)
+        public ActivityController(IActivityRepo activityRepository, ILogger<ActivityController> logger)
         {
             _activityRepository = activityRepository;
+            _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var activities = _activityRepository.GetAll();
+            var activities = await _activityRepository.GetAllAsync();
             return Ok(activities);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var activity = _activityRepository.GetById(id);
+            var activity = await _activityRepository.GetByIdAsync(id);
             if (activity == null)
             {
                 return NotFound();
@@ -37,23 +38,33 @@ namespace ActivityManager.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] DAL.Data.Activity activity)
+        public async Task<IActionResult> Create([FromBody] Activity activity)
         {
-            _activityRepository.Add(activity);
+            if (activity == null)
+            {
+                return BadRequest();
+            }
+
+            await _activityRepository.AddAsync(activity);
             return CreatedAtAction(nameof(GetById), new { id = activity.Id }, activity);
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] DAL.Data.Activity activity)
+        public async Task<IActionResult> Update([FromBody] Activity activity)
         {
-            _activityRepository.Update(activity);
+            if (activity == null)
+            {
+                return BadRequest();
+            }
+
+            await _activityRepository.UpdateAsync(activity);
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _activityRepository.Delete(id);
+            await _activityRepository.DeleteAsync(id);
             return NoContent();
         }
     }
