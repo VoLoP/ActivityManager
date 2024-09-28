@@ -22,19 +22,36 @@ namespace ActivityManager.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var activities = await _activityRepository.GetAllAsync();
-            return Ok(activities);
+            try
+            {
+                var activities = await _activityRepository.GetAllAsync();
+                return Ok(activities);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching all activities.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var activity = await _activityRepository.GetByIdAsync(id);
-            if (activity == null)
+            try
             {
-                return NotFound();
+                var activity = await _activityRepository.GetByIdAsync(id);
+                if (activity == null)
+                {
+                    _logger.LogWarning($"Activity with ID {id} not found.");
+                    return NotFound();
+                }
+                return Ok(activity);
             }
-            return Ok(activity);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error fetching activity with ID {id}.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPost]
@@ -42,11 +59,20 @@ namespace ActivityManager.Controllers
         {
             if (activity == null)
             {
+                _logger.LogWarning("Create activity request with null activity.");
                 return BadRequest();
             }
 
-            await _activityRepository.AddAsync(activity);
-            return CreatedAtAction(nameof(GetById), new { id = activity.Id }, activity);
+            try
+            {
+                await _activityRepository.AddAsync(activity);
+                return CreatedAtAction(nameof(GetById), new { id = activity.Id }, activity);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating activity.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPut]
@@ -54,18 +80,35 @@ namespace ActivityManager.Controllers
         {
             if (activity == null)
             {
+                _logger.LogWarning("Update activity request with null activity.");
                 return BadRequest();
             }
 
-            await _activityRepository.UpdateAsync(activity);
-            return NoContent();
+            try
+            {
+                await _activityRepository.UpdateAsync(activity);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating activity.");
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _activityRepository.DeleteAsync(id);
-            return NoContent();
+            try
+            {
+                await _activityRepository.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error deleting activity with ID {id}.");
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }
