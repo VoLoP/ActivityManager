@@ -89,5 +89,20 @@ namespace ActivityManager.DAL.Repos
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Data.Activity>> SearchAsync(string searchTerm)
+        {
+            try
+            {
+                return await _context.Activities
+                    .Where(a => a.Name.Contains(searchTerm))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching activities.");
+                throw;
+            }
+        }
     }
 }

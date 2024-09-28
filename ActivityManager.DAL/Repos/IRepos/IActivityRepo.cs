@@ -11,5 +11,6 @@ namespace ActivityManager.DAL.Repos.IRepos
         Task AddAsync(Activity activity);
         Task UpdateAsync(Activity activity);
         Task DeleteAsync(int id);
+        Task<IEnumerable<Activity>> SearchAsync(string searchTerm);
     }
 }

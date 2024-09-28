@@ -110,5 +110,20 @@ namespace ActivityManager.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string searchTerm)
+        {
+            try
+            {
+                var activities = await _activityRepository.SearchAsync(searchTerm);
+                return Ok(activities);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error searching activities.");
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }
