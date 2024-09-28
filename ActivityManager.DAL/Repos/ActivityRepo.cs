@@ -72,7 +72,7 @@ namespace ActivityManager.DAL.Repos
             }
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
@@ -81,7 +81,9 @@ namespace ActivityManager.DAL.Repos
                 {
                     _context.Activities.Remove(activity);
                     await _context.SaveChangesAsync();
+                    return true;
                 }
+                return false;
             }
             catch (Exception ex)
             {

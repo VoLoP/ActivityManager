@@ -23,6 +23,10 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

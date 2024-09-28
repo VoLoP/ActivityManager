@@ -10,7 +10,7 @@ namespace ActivityManager.DAL.Repos.IRepos
         Task<Activity> GetByIdAsync(int id);
         Task AddAsync(Activity activity);
         Task UpdateAsync(Activity activity);
-        Task DeleteAsync(int id);
+        Task<bool> DeleteAsync(int id);
         Task<IEnumerable<Activity>> SearchAsync(string searchTerm);
     }
 }

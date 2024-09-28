@@ -101,7 +101,12 @@ namespace ActivityManager.Controllers
         {
             try
             {
-                await _activityRepository.DeleteAsync(id);
+                var result = await _activityRepository.DeleteAsync(id);
+                if (!result)
+                {
+                    _logger.LogWarning($"Activity with ID {id} not found.");
+                    return NotFound();
+                }
                 return NoContent();
             }
             catch (Exception ex)
