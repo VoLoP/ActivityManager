@@ -9,7 +9,7 @@ import { tap } from 'rxjs/operators';
 })
 export class ActivityService {
 
-  private apiUrl = 'https://localhost:7207/api/Activity';
+  private apiUrl = 'http://localhost:5112/api/activity';
   private activitiesSubject = new BehaviorSubject<Activity[]>([]);
   public activities$ = this.activitiesSubject.asObservable();
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, DoCheck, OnInit } from '@angular/core';
 import { ActivityService } from '../../services/activity.service';
 import { Activity } from '../../models/activity.model';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './activity.component.html',
   styleUrl: './activity.component.scss'
 })
-export class ActivityComponent implements OnInit {
+export class ActivityComponent implements OnInit, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked {
 
   activities: Activity[] = [];
   newActivity: Activity = { id: 0, name: '', date: new Date(), description: '' };
@@ -23,6 +23,7 @@ export class ActivityComponent implements OnInit {
   constructor(private activityService: ActivityService) {}
 
   ngOnInit(): void {
+    console.log('ActivityComponent: ngOnInit');
     this.activityService.activities$.subscribe(data => {
       this.activities = data;
     });
@@ -49,5 +50,25 @@ export class ActivityComponent implements OnInit {
         this.selectedActivity = null;
       });
     }
+  }
+
+  ngDoCheck(): void {
+    console.log('ActivityComponent: ngDoCheck');
+  }
+
+  ngAfterContentInit(): void {
+    console.log('ActivityComponent: ngAfterContentInit');
+  }
+
+  ngAfterContentChecked(): void {
+    console.log('ActivityComponent: ngAfterContentChecked');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('ActivityComponent: ngAfterViewInit');
+  }
+
+  ngAfterViewChecked(): void {
+    console.log('ActivityComponent: ngAfterViewChecked');
   }
 }
